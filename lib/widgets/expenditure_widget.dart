@@ -6,31 +6,7 @@ import 'package:flutter_bloc/flutter_bloc.dart';
 import '../models/expenditure.dart';
 
 class ExpenditureWidget extends StatelessWidget {
-  ExpenditureWidget();
-
-  // void _refresh() async {
-  //   expenditureList = await Expenditure().getDemoList();
-  //   print("Refresh");
-  //   for (var expenditure in expenditureList) {
-  //     print(expenditure);
-  //   }
-
-  //   // setState(() async {
-  //   //   expenditureList = await Expenditure().getDemoList();
-  //   // });
-  // }
-
-  @override
-  Widget build(BuildContext context) {
-    return BlocProvider(
-      create: (context) => ExpenditureCubit(),
-      child: ContainerBlock(),
-    );
-  }
-}
-
-class ContainerBlock extends StatelessWidget {
-  const ContainerBlock({
+  const ExpenditureWidget({
     Key key,
   }) : super(key: key);
 
