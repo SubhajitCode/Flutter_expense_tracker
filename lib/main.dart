@@ -1,6 +1,6 @@
 import 'package:flutter/material.dart';
 
-import 'widgets/transactionWidget.dart';
+import 'widgets/expenditure_widget.dart';
 import 'widgets/text_input_widget.dart';
 
 void main() {
@@ -46,8 +46,7 @@ class MyHomePage extends StatelessWidget {
       body: Column(
         crossAxisAlignment: CrossAxisAlignment.stretch,
         children: [
-          //ChartWidget(),
-          TransactionWidget(),
+          ExpenditureWidget(),
         ],
       ),
       floatingActionButton: FloatingActionButton(

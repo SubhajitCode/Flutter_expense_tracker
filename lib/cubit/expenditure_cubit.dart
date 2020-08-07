@@ -1,10 +1,20 @@
 import 'package:bloc/bloc.dart';
-import 'package:expense_tracker/models/expenditure.dart';
+import 'package:expense_tracker/models/expenditure_provider.dart';
+import 'package:flutter/foundation.dart';
 import 'package:meta/meta.dart';
+import '../models/expenditure.dart';
 
 part 'expenditure_state.dart';
 
 class ExpenditureCubit extends Cubit<ExpenditureState> {
-  final List<Expenditure> expenditures;
-  ExpenditureCubit(this.expenditures) : super(ExpenditureInitial(expenditures));
+  ExpenditureCubit() : super(ExpenditureInitial()) {
+    getAllExpenditure();
+  }
+
+  Future<void> getAllExpenditure() async {
+    emit(ExpenditureLoading());
+    List<Expenditure> expenditures =
+        await ExpenditureProvider.tp.getAllExpenditure();
+    emit(ExpenditureLoaded(expenditures));
+  }
 }

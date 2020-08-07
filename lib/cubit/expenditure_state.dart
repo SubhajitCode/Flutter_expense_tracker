@@ -6,24 +6,30 @@ abstract class ExpenditureState {
 }
 
 class ExpenditureInitial extends ExpenditureState {
+  const ExpenditureInitial();
+}
+
+class ExpenditureLoading extends ExpenditureState {
+  const ExpenditureLoading();
+}
+
+class ExpenditureLoaded extends ExpenditureState {
   final List<Expenditure> expenditures;
-  const ExpenditureInitial(this.expenditures);
+  const ExpenditureLoaded(this.expenditures);
 
   @override
   bool operator ==(Object o) {
     if (identical(this, o)) return true;
 
-    return o is ExpenditureInitial && o.expenditures == expenditures;
+    return o is ExpenditureLoaded && listEquals(o.expenditures, expenditures);
   }
 
   @override
   int get hashCode => expenditures.hashCode;
 }
 
-// class ExpenditureInsert extends ExpenditureState {
+class ExpenditureInsert extends ExpenditureState {}
 
-// }
+class ExpenditureDeleted extends ExpenditureState {}
 
-// class ExpenditureDelete extends ExpenditureState {}
-
-// class ExpenditureUpdate extends ExpenditureState {}
+class ExpenditureUpdated extends ExpenditureState {}
