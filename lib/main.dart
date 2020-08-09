@@ -1,7 +1,7 @@
-import 'package:expense_tracker/cubit/expenditure_cubit.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 
+import 'cubit/expenditure_cubit.dart';
 import 'widgets/expenditure_widget.dart';
 import 'widgets/text_input_modal.dart';
 
@@ -14,10 +14,12 @@ class ExpenseTracker extends StatelessWidget {
   Widget build(BuildContext context) {
     return MaterialApp(
       theme: ThemeData(
-        primarySwatch: Colors.purple,
-        accentColor: Colors.indigo,
+        primarySwatch: Colors.deepPurple,
       ),
-      home: MyHomePage(),
+      home: BlocProvider(
+        create: (context) => ExpenditureCubit(),
+        child: MyHomePage(),
+      ),
     );
   }
 }
@@ -26,40 +28,40 @@ class MyHomePage extends StatelessWidget {
   const MyHomePage({
     Key key,
   }) : super(key: key);
+  void _textInputModal(BuildContext prevContext) async {
+    ExpenditureCubit expenditureCubit = prevContext.bloc<ExpenditureCubit>();
+    showModalBottomSheet(
+      isScrollControlled: true,
+      context: prevContext,
+      builder: (prevContext) {
+        return BlocProvider.value(
+          value: expenditureCubit,
+          child: InputWidget(),
+        );
+      },
+    );
+  }
+
   @override
   Widget build(BuildContext context) {
-    return BlocProvider(
-      create: (context) => ExpenditureCubit(),
-      child: Scaffold(
-        appBar: AppBar(
-          title: Center(
-            child: Text("Personal expense Tracker"),
-          ),
-          actions: [
-            IconButton(
-              icon: Icon(
-                Icons.add_circle,
-                size: 40,
-              ),
-              onPressed: () => textInputModal(context),
-              splashRadius: 20,
-            )
-          ],
+    return Scaffold(
+      appBar: AppBar(
+        title: Center(
+          child: Text("Personal expense Tracker"),
         ),
-        body: SingleChildScrollView(
-          child: Column(
-            crossAxisAlignment: CrossAxisAlignment.stretch,
-            children: [
-              ExpenditureWidget(),
-            ],
-          ),
-        ),
-        floatingActionButton: FloatingActionButton(
-            backgroundColor: Theme.of(context).primaryColor,
-            child: Icon(Icons.add),
-            onPressed: () => textInputModal(context)),
-        floatingActionButtonLocation: FloatingActionButtonLocation.centerFloat,
       ),
+      body: Column(
+        crossAxisAlignment: CrossAxisAlignment.stretch,
+        children: [
+          ExpenditureWidget(),
+        ],
+      ),
+      floatingActionButton: FloatingActionButton(
+        backgroundColor: Theme.of(context).primaryColor,
+        child: Icon(Icons.add),
+        onPressed: () => _textInputModal(context),
+      ),
+      floatingActionButtonLocation: FloatingActionButtonLocation.centerDocked,
     );
   }
 }

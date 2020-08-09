@@ -10,33 +10,56 @@ class ExpenditureWidget extends StatelessWidget {
     Key key,
   }) : super(key: key);
 
-  Widget listView(List<Expenditure> expenditureList) {
+  // void _onEditHandler(id) {
+  //   return;
+  // }
+
+  void _onDeleteHandler(int id, ExpenditureCubit expCubit) {
+    expCubit.delete(id);
+  }
+
+  Widget _listView(List<Expenditure> expenditureList) {
     return ListView.builder(
       itemBuilder: (context, index) {
-        return Card(
-          elevation: 5,
-          child: ListTile(
-            leading: CircleAvatar(
-              radius: 30,
-              backgroundColor: Theme.of(context).accentColor,
-              child: FittedBox(
-                  child: Padding(
-                padding: const EdgeInsets.all(6),
-                child: Text(
-                  "\u20B9${expenditureList[index].amount}",
-                ),
-              )),
+        return Column(
+          children: [
+            ListTile(
+              leading: CircleAvatar(
+                radius: 30,
+                child: FittedBox(
+                    child: Padding(
+                  padding: const EdgeInsets.all(6),
+                  child: Text(
+                    "\u20B9${expenditureList[index].amount}",
+                  ),
+                )),
+              ),
+              title: Text("${expenditureList[index].title}",
+                  style: Theme.of(context).textTheme.headline6),
+              subtitle: Text("Date",
+                  //TODO implement Date
+                  //DateFormat.yMMMd().format(expenditureList[index].date),
+                  style: Theme.of(context).textTheme.subtitle1),
+              trailing: Row(
+                mainAxisSize: MainAxisSize.min,
+                children: [
+                  //TODO implement Edit
+                  // IconButton(
+                  //     icon: Icon(
+                  //       Icons.edit,
+                  //       color: Colors.blue,
+                  //     ),
+                  //     onPressed: null),
+                  IconButton(
+                      icon: Icon(Icons.delete_outline_outlined),
+                      onPressed: () => _onDeleteHandler(
+                          expenditureList[index].id,
+                          context.bloc<ExpenditureCubit>())),
+                ],
+              ),
             ),
-            title: Text(
-              "${expenditureList[index].title}",
-              style: Theme.of(context).textTheme.headline6,
-            ),
-            subtitle: Text(
-              "Date",
-              //DateFormat.yMMMd().format(expenditureList[index].date),
-              style: Theme.of(context).textTheme.subtitle1,
-            ),
-          ),
+            Divider(),
+          ],
         );
       },
       itemCount: expenditureList.length,
@@ -45,16 +68,21 @@ class ExpenditureWidget extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    return Container(
-        height: 600,
+    return Expanded(
+      child: Container(
         child: BlocBuilder<ExpenditureCubit, ExpenditureState>(
-            builder: (context, state) {
-          if (state is ExpenditureInitial) return Text("Initial ...");
-          if (state is ExpenditureLoading) return Text("Loading ...");
-          if (state is ExpenditureLoaded)
-            return listView(state.expenditures);
-          else
-            return Text("something Wrong");
-        }));
+          builder: (context, state) {
+            if (state is ExpenditureInitial)
+              return Text("Initial ..."); //TODO implement Initial Scrren
+            if (state is ExpenditureLoading)
+              return Text("Loading ..."); //TODO Implement Loading screen
+            if (state is ExpenditureLoaded)
+              return _listView(state.expenditures);
+            else
+              return Text("some thing Is wong");
+          },
+        ),
+      ),
+    );
   }
 }

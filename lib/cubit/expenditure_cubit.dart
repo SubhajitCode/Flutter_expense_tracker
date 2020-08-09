@@ -15,12 +15,21 @@ class ExpenditureCubit extends Cubit<ExpenditureState> {
     emit(ExpenditureLoading());
     List<Expenditure> expenditures =
         await ExpenditureProvider.tp.getAllExpenditure();
-    emit(ExpenditureLoaded(expenditures));
+    if (expenditures != null && expenditures.length > 0)
+      emit(ExpenditureLoaded(expenditures));
+    else
+      emit(ExpenditureInitial());
   }
 
   Future<void> insert(Expenditure expenditure) async {
     emit(ExpenditureLoading());
     await ExpenditureProvider.tp.insert(expenditure);
+    getAllExpenditure();
+  }
+
+  Future<void> delete(int id) async {
+    emit(ExpenditureLoading());
+    await ExpenditureProvider.tp.delete(id);
     getAllExpenditure();
   }
 }

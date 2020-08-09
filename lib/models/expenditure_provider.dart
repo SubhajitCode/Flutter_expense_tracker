@@ -14,6 +14,7 @@ class ExpenditureProvider {
   Database _database;
 
   Future<Database> get database async {
+    if (_database != null) return _database;
     String path = join(await getDatabasesPath(), "my_expenses.db");
     _database = await openDatabase(path, version: 1,
         onCreate: (Database db, int version) async {
@@ -60,4 +61,11 @@ class ExpenditureProvider {
     } else
       return null;
   }
+
+  Future<int> delete(int id) async {
+    Database db = await database;
+    return db.delete(tableName, where: "id=?", whereArgs: [id]);
+  }
+
+  Future close() async => _database.close();
 }

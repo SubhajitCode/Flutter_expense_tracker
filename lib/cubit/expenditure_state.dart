@@ -28,8 +28,4 @@ class ExpenditureLoaded extends ExpenditureState {
   int get hashCode => expenditures.hashCode;
 }
 
-class ExpenditureInsert extends ExpenditureState {}
-
-class ExpenditureDeleted extends ExpenditureState {}
-
-class ExpenditureUpdated extends ExpenditureState {}
+class ExpenditureNodata extends ExpenditureState {}

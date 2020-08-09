@@ -1,23 +1,10 @@
+import 'dart:ui';
+
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:flutter/material.dart';
 
 import '../cubit/expenditure_cubit.dart';
 import '../models/expenditure.dart';
-
-void textInputModal(BuildContext prevContext) async {
-  ExpenditureCubit expenditureCubit =
-      BlocProvider.of<ExpenditureCubit>(prevContext);
-  showModalBottomSheet(
-    isScrollControlled: true,
-    context: prevContext,
-    builder: (prevContext) {
-      return BlocProvider.value(
-        value: expenditureCubit,
-        child: InputWidget(),
-      );
-    },
-  );
-}
 
 class InputWidget extends StatefulWidget {
   @override
@@ -62,7 +49,10 @@ class _InputWidgetState extends State<InputWidget> {
               alignment: Alignment.bottomRight,
               child: RaisedButton(
                 onPressed: () => _submitToDb(context),
-                child: Text("Add Expenditure"),
+                child: Text(
+                  "Add Expenditure",
+                  style: TextStyle(color: Colors.white),
+                ),
                 color: Theme.of(context).primaryColor,
               ),
             )
