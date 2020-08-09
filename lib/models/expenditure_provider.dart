@@ -4,28 +4,34 @@ import 'package:path/path.dart';
 import 'expenditure.dart';
 
 class ExpenditureProvider {
-  static const columnId = "id";
-  static const columnTitle = "title";
-  static const columnAmount = "amount";
-  static const columnNote = "note";
   ExpenditureProvider._();
   static final ExpenditureProvider tp = ExpenditureProvider._();
   static const tableName = "expenses";
   Database _database;
 
+  Future<void> _onCreate(Database db, int version) async {
+    await db.execute('''CREATE TABLE $tableName (
+        ${Expenditure.columnId} INTEGER PRIMARY KEY,
+        ${Expenditure.columnTitle} TEXT NOT NULL,
+        ${Expenditure.columnAmount} REAL NOT NULL,
+        ${Expenditure.columnNote} TEXT,
+        ${Expenditure.columnDate} TEXT
+        )
+      ''');
+  }
+
+  Future<void> _onUpgrade(Database db, int oldVersion, int newVersion) async {
+    if (oldVersion < newVersion) {
+      await db.execute(
+          "ALTER TABLE $tableName ADD COLUMN ${Expenditure.columnDate} TEXT ;");
+    }
+  }
+
   Future<Database> get database async {
     if (_database != null) return _database;
     String path = join(await getDatabasesPath(), "my_expenses.db");
-    _database = await openDatabase(path, version: 1,
-        onCreate: (Database db, int version) async {
-      await db.execute('''CREATE TABLE $tableName (
-        $columnId INTEGER PRIMARY KEY,
-        $columnTitle TEXT NOT NULL,
-        $columnAmount REAL NOT NULL,
-        $columnNote TEXT
-        )
-      ''');
-    });
+    _database = await openDatabase(path,
+        version: 2, onCreate: _onCreate, onUpgrade: _onUpgrade);
     return _database;
   }
 

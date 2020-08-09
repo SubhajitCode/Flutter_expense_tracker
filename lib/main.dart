@@ -56,10 +56,11 @@ class MyHomePage extends StatelessWidget {
           ExpenditureWidget(),
         ],
       ),
-      floatingActionButton: FloatingActionButton(
+      floatingActionButton: FloatingActionButton.extended(
         backgroundColor: Theme.of(context).primaryColor,
-        child: Icon(Icons.add),
+        icon: Icon(Icons.add),
         onPressed: () => _textInputModal(context),
+        label: Text("Add Expense"),
       ),
       floatingActionButtonLocation: FloatingActionButtonLocation.centerDocked,
     );

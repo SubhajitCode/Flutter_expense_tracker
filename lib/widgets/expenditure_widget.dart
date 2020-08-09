@@ -1,9 +1,12 @@
 import 'package:expense_tracker/cubit/expenditure_cubit.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
+import 'package:intl/intl.dart';
 //import 'package:intl/intl.dart';
 
 import '../models/expenditure.dart';
+import 'empty_state.dart';
+import 'loading_state.dart';
 
 class ExpenditureWidget extends StatelessWidget {
   const ExpenditureWidget({
@@ -19,6 +22,7 @@ class ExpenditureWidget extends StatelessWidget {
   }
 
   Widget _listView(List<Expenditure> expenditureList) {
+    expenditureList = expenditureList.reversed.toList();
     return ListView.builder(
       itemBuilder: (context, index) {
         return Column(
@@ -27,18 +31,15 @@ class ExpenditureWidget extends StatelessWidget {
               leading: CircleAvatar(
                 radius: 30,
                 child: FittedBox(
-                    child: Padding(
-                  padding: const EdgeInsets.all(6),
                   child: Text(
                     "\u20B9${expenditureList[index].amount}",
                   ),
-                )),
+                ),
               ),
               title: Text("${expenditureList[index].title}",
                   style: Theme.of(context).textTheme.headline6),
-              subtitle: Text("Date",
-                  //TODO implement Date
-                  //DateFormat.yMMMd().format(expenditureList[index].date),
+              subtitle: Text(
+                  DateFormat.yMMMd().format(expenditureList[index].date),
                   style: Theme.of(context).textTheme.subtitle1),
               trailing: Row(
                 mainAxisSize: MainAxisSize.min,
@@ -72,10 +73,8 @@ class ExpenditureWidget extends StatelessWidget {
       child: Container(
         child: BlocBuilder<ExpenditureCubit, ExpenditureState>(
           builder: (context, state) {
-            if (state is ExpenditureInitial)
-              return Text("Initial ..."); //TODO implement Initial Scrren
-            if (state is ExpenditureLoading)
-              return Text("Loading ..."); //TODO Implement Loading screen
+            if (state is ExpenditureInitial) return EmptyState();
+            if (state is ExpenditureLoading) return LoadingState();
             if (state is ExpenditureLoaded)
               return _listView(state.expenditures);
             else

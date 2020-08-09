@@ -4,6 +4,7 @@ class Expenditure {
   static const columnTitle = "title";
   static const columnAmount = "amount";
   static const columnNote = "note";
+  static const columnDate = "date";
   int id;
   String title;
   double amount;
@@ -19,6 +20,7 @@ class Expenditure {
     map[columnTitle] = title;
     map[columnAmount] = amount;
     map[columnNote] = note;
+    map[columnDate] = date.toIso8601String();
     return map;
   }
 
@@ -27,6 +29,8 @@ class Expenditure {
     title = map[columnTitle];
     amount = map[columnAmount];
     note = map[columnNote];
+    date = DateTime.parse(map[columnDate]);
   }
-  String toString() => 'id=$id, amount=$amount, title=$title, note=$note';
+  String toString() =>
+      'id=$id, amount=$amount, title=$title, note=$note, date=$date';
 }
