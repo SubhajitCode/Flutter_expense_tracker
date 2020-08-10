@@ -5,7 +5,7 @@ import 'cubit/expenditure_cubit.dart';
 import 'widgets/expenditure_widget.dart';
 import 'widgets/text_input_modal.dart';
 
-void main() {
+void main() async {
   runApp(ExpenseTracker());
 }
 

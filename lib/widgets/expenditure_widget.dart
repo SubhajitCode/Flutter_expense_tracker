@@ -31,8 +31,11 @@ class ExpenditureWidget extends StatelessWidget {
               leading: CircleAvatar(
                 radius: 30,
                 child: FittedBox(
-                  child: Text(
-                    "\u20B9${expenditureList[index].amount}",
+                  child: Padding(
+                    padding: const EdgeInsets.all(8.0),
+                    child: Text(
+                      "\u20B9${expenditureList[index].amount}",
+                    ),
                   ),
                 ),
               ),

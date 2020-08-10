@@ -1,3 +1,9 @@
+import 'package:hive/hive.dart';
+import 'dart:math';
+
+part 'expenditure.g.dart';
+
+@HiveType(typeId: 0)
 class Expenditure {
   //This are names for DB Columns
   static const columnId = "id";
@@ -5,12 +11,18 @@ class Expenditure {
   static const columnAmount = "amount";
   static const columnNote = "note";
   static const columnDate = "date";
+  @HiveField(0)
   int id;
+  @HiveField(1)
   String title;
+  @HiveField(2)
   double amount;
+  @HiveField(3)
   String note;
+  @HiveField(4)
   DateTime date;
-  Expenditure({this.title, this.amount, this.note, this.date});
+  Expenditure({this.title, this.amount, this.note, this.date})
+      : id = Random().nextInt(100000000);
 
   Map<String, dynamic> toMap() {
     Map<String, dynamic> map = new Map<String, dynamic>();
